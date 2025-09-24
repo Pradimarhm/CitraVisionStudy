@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # membaca citra dari path gambar
-image_path = 'P4\img\duar.jpg'
+image_path = 'P4/img/duar.jpg'
 image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE) #membaca grayscale
 
 # 1. Region Glowing
@@ -19,7 +19,7 @@ def region_growing(img, seed_point, threshold):
         current_point = to_check.pop(0)
         for dx in [-1,0,1]:
             for dy in [-1,0,1]:
-                x, y = current_point[0] + dx, current_point[1] + dy
+                x, y = current_point[0  ] + dx, current_point[1] + dy
                 if 0 <= x < h and 0 <= y <w and segmented[x,y] == 0:
                     if abs(int(img[x, y]) - int(region_intensity)) <= threshold:
                         segmented[x,y] = 255
@@ -98,7 +98,7 @@ adaptive_thresh_mean, adaptive_thresh_gausian = adaptive_thresholding(image)
 plt.figure(figsize=(15, 10))
 
 # original image
-plt.subplots(3, 2, 1)
+plt.subplot(3, 2, 1)
 plt.imshow(image, cmap='gray')
 plt.title('original image')
 

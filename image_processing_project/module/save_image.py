@@ -5,8 +5,8 @@ from PyQt5.QtWidgets import (
 )
 
 from PyQt5.QtWidgets import QFileDialog, QWidget
-from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtCore import Qt
+# from PyQt5.QtGui import QImage, QPixmap
+# from PyQt5.QtCore import Qt
 
 class ImageSave:
     def __init__(self, parent: QWidget, label_before: QWidget, label_after: QWidget = None):

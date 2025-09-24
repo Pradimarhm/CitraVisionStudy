@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication, QAction, QDialog, QLabel, QVBoxLayout
+from PyQt5.QtCore import pyqtSignal
 
 from layout.toppBar.color_menu import ColorMenu
 from layout.toppBar.image_processing import ImageProcessing
@@ -11,6 +12,7 @@ from layout.toppBar.view import View
 from view.tentang import TentangDialog
 
 def top_bar(parent):
+    
     menubar = parent.menuBar()
         
     file_menu = File(parent)
@@ -29,7 +31,9 @@ def top_bar(parent):
     image_processing = ImageProcessing(parent)
     menubar.addMenu(image_processing)
     
-    aritmetical_menu = menubar.addMenu("Aritmetical Operation")
+    aritmetical_action = QAction("Aritmetical Operation", parent)
+    menubar.addAction(aritmetical_action)
+    # aritmetical_menu.addction
     
     filtering = Filter(parent)
     menubar.addMenu(filtering)
@@ -41,7 +45,7 @@ def top_bar(parent):
     menubar.addMenu(morfologi)
     
     # return menubar
-    return menubar, file_menu, view_menu
+    return menubar, file_menu, view_menu, color_menu, aritmetical_action, image_processing, filtering
 
 def open_tentang(parent):
     dialog = TentangDialog(parent)
