@@ -20,9 +20,9 @@ class ImageSave:
         if self.label_after and self.label_after.pixmap() and not self.label_after.pixmap().isNull():
             pixmap = self.label_after.pixmap()
             print(">> Menyimpan gambar hasil edit...")
-        elif self.label_before and self.label_before.pixmap():
-            pixmap = self.label_before.pixmap()
-            print(">> Menyimpan gambar asli...")
+        # elif self.label_before and self.label_before.pixmap():
+        #     pixmap = self.label_before.pixmap()
+        #     print(">> Menyimpan gambar asli...")
         else:
             QMessageBox.warning(self.parent, "Peringatan", "Tidak ada gambar yang bisa disimpan.")
             return

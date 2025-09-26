@@ -44,11 +44,16 @@ from module.histogram_input import histogramWindow
 from module.histogram_output import histogramWindow_output
 # from module.aritmetical import AritmeticalWindow
 
-from module.filter import identify_filter
-from module.filter import edge_detection_1
-from module.filter import edge_detection_2
-from module.filter import edge_detection_3
-from module.filter import sharpen_filter
+from module.filter import (
+    identify_filter, edge_detection_1, edge_detection_2, edge_detection_3, sharpen_filter,
+    # Tambahan fungsi baru dari filters.py
+    gaussian_blur_3x3, gaussian_blur_5x5,
+    unsharp_masking,
+    average_filter,
+    low_pass, 
+    high_pass, 
+    bandstop
+)
 # from module.histogram_equalizer import HistogramEqualizer
 
 from module.color.rgb import yellow_filter, orange_filter, ungu_filter, cyan_filter, abu_filter, coklat_filter, merah_filter
@@ -175,6 +180,19 @@ class MainWindow(QMainWindow):
         filtering.edge3Requested.connect(self.apply_edge3)
         
         filtering.sharpenRequested.connect(self.apply_sharpen)
+        
+        filtering.gausian3Requested.connect(self.apply_gaussian_3x3)
+        filtering.gausian5Requested.connect(self.apply_gaussian_5x5)
+        
+        filtering.unsharpMaskingRequested.connect(self.apply_unsharp)
+        
+        filtering.averageRequested.connect(self.apply_average)
+        
+        filtering.lowPassRequested.connect(self.apply_low_pass)
+        
+        filtering.highPassRequested.connect(self.apply_high_pass)
+        
+        filtering.bandstopRequested.connect(self.apply_bandstop)
 
         self.setStatusBar(QStatusBar(self))
         
@@ -237,6 +255,101 @@ class MainWindow(QMainWindow):
             return
         result = sharpen_filter(arr)
         numpy_to_qlabel(result, self.label_after)
+        
+    def apply_gaussian_3x3(self):
+        arr = qlabel_to_numpy(self.label_before)
+        if arr is None:
+            QMessageBox.warning(self, "Peringatan", "Belum ada gambar di Original Image")
+            return
+        result = gaussian_blur_3x3(arr)
+        numpy_to_qlabel(result, self.label_after)
+    # Tambahan: Fungsi untuk Gaussian Blur 5x5
+    def apply_gaussian_5x5(self):
+        arr = qlabel_to_numpy(self.label_before)
+        if arr is None:
+            QMessageBox.warning(self, "Peringatan", "Belum ada gambar di Original Image")
+            return
+        result = gaussian_blur_5x5(arr)
+        numpy_to_qlabel(result, self.label_after)
+        
+        
+    
+    def apply_average(self):
+        arr = qlabel_to_numpy(self.label_before)
+        if arr is None:
+            QMessageBox.warning(self, "Peringatan", "Belum ada gambar di Original Image")
+            return
+        result = average_filter(arr)
+        numpy_to_qlabel(result, self.label_after)
+        
+    # Tambahan: Fungsi untuk Unsharp Masking (spatial sharpening, default strength=1.5)
+    def apply_unsharp(self):
+        arr = qlabel_to_numpy(self.label_before)
+        if arr is None:
+            QMessageBox.warning(self, "Peringatan", "Belum ada gambar di Original Image")
+            return
+        result = unsharp_masking(arr, strength=1.5)  # Bisa ubah strength ke 2.0 jika ingin lebih tajam
+        numpy_to_qlabel(result, self.label_after)
+
+    # Tambahan: Fungsi untuk Low-Pass Filter (frequency smoothing, D0=3 default)
+    def apply_low_pass(self):
+        arr = qlabel_to_numpy(self.label_before)
+        if arr is None:
+            QMessageBox.warning(self, "Peringatan", "Belum ada gambar di Original Image")
+            return
+        result = low_pass(arr)  # D0=3: blur halus, redam frekuensi tinggi
+        numpy_to_qlabel(result, self.label_after)
+
+    # Tambahan: Fungsi untuk High-Pass Filter (frequency edge enhancement, D0=5 default)
+    def apply_high_pass(self):
+        arr = qlabel_to_numpy(self.label_before)
+        if arr is None:
+            QMessageBox.warning(self, "Peringatan", "Belum ada gambar di Original Image")
+            return
+        result = high_pass(arr)  # D0=5: tonjolkan detail/tepi, area halus gelap
+        numpy_to_qlabel(result, self.label_after)
+
+    # Tambahan: Fungsi untuk Bandstop Filter (frequency denoising spesifik, D1=2 D2=5 default)
+    def apply_bandstop(self):
+        arr = qlabel_to_numpy(self.label_before)
+        if arr is None:
+            QMessageBox.warning(self, "Peringatan", "Belum ada gambar di Original Image")
+            return
+        result = bandstop(arr)  # D1=2, D2=5: hilangkan band frekuensi tengah (noise periodic)
+        numpy_to_qlabel(result, self.label_after)
+
+        
+    # def apply_unsharp(self):
+    #     arr = qlabel_to_numpy(self.label_before)
+    #     if arr is None:
+    #         QMessageBox.warning(self, "Peringatan", "Belum ada gambar di Original Image")
+    #         return
+    #     result = unsharp_masking(arr)
+    #     numpy_to_qlabel(result, self.label_after)
+        
+    # def apply_low_pass(self):
+    #     arr = qlabel_to_numpy(self.label_before)
+    #     if arr is None:
+    #         QMessageBox.warning(self, "Peringatan", "Belum ada gambar di Original Image")
+    #         return
+    #     result = low_pass(arr)
+    #     numpy_to_qlabel(result, self.label_after)
+        
+    # def apply_high_pass(self):
+    #     arr = qlabel_to_numpy(self.label_before)
+    #     if arr is None:
+    #         QMessageBox.warning(self, "Peringatan", "Belum ada gambar di Original Image")
+    #         return
+    #     result = high_pass(arr)
+    #     numpy_to_qlabel(result, self.label_after)
+        
+    # def apply_bandstop(self):
+    #     arr = qlabel_to_numpy(self.label_before)
+    #     if arr is None:
+    #         QMessageBox.warning(self, "Peringatan", "Belum ada gambar di Original Image")
+    #         return
+    #     result = bandstop(arr)
+    #     numpy_to_qlabel(result, self.label_after)
     
     
     # histogram

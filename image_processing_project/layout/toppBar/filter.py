@@ -10,6 +10,19 @@ class Filter(QMenu):
     
     sharpenRequested = pyqtSignal()
     
+    gausian3Requested = pyqtSignal()
+    gausian5Requested = pyqtSignal()
+    
+    unsharpMaskingRequested = pyqtSignal()
+    
+    averageRequested = pyqtSignal()
+    
+    lowPassRequested = pyqtSignal()
+    
+    highPassRequested = pyqtSignal()
+    
+    bandstopRequested = pyqtSignal()
+    
     def __init__(self, parent=None):
         super().__init__("Filter", parent)
         
@@ -35,25 +48,42 @@ class Filter(QMenu):
         self.sharpen_menu = QAction("Sharpen",self)
         self.sharpen_menu.triggered.connect(self.sharpen_menu_clicked)
         
+        # gausian menu
         gausian_blur_menu = QMenu("Gausian Blur", self)
-        gausian_blur_menu.addAction(QAction("Gausian Blur 3x3", self))
-        gausian_blur_menu.addAction(QAction("Gausian Blur 5x5", self))
         
-        unshap_masking_menu = QAction("Unshap Masking", self)
-        average_filter_menu = QAction("Average Filter", self)
-        lowpass_filter_menu = QAction("Low Pass Filter", self)
-        highpass_filter_menu = QAction("High Pass Filter", self)
-        bandstop_filter_menu = QAction("Bandstop Filter", self)
+        self.gausian3_button = QAction("Gausian 3x3",self)
+        self.gausian3_button.triggered.connect(self.gausian3_menu_click)
+        gausian_blur_menu.addAction(self.gausian3_button)
+        
+        self.gausian5_button = QAction("Gausian 5x5",self)
+        self.gausian5_button.triggered.connect(self.gausian5_menu_clicked)
+        gausian_blur_menu.addAction(self.gausian5_button)
+        
+        
+        self.unsharp_masking_menu = QAction("Unsharp Masking", self)
+        self.unsharp_masking_menu.triggered.connect(self.gausian5_menu_clicked)
+        
+        self.average_filter_menu = QAction("Average Filter", self)
+        self.average_filter_menu.triggered.connect(self.average_menu_clicked)
+        
+        self.lowpass_filter_menu = QAction("Low Pass Filter", self)
+        self.lowpass_filter_menu.triggered.connect(self.low_pass_clicked)
+        
+        self.highpass_filter_menu = QAction("High Pass Filter", self)
+        self.highpass_filter_menu.triggered.connect(self.high_pass_clicked)
+        
+        self.bandstop_filter_menu = QAction("Bandstop Filter", self)
+        self.bandstop_filter_menu.triggered.connect(self.bandstop_clicked)
         
         self.addAction(self.identify_menu)
         self.addMenu(edge_detection_menu)
         self.addAction(self.sharpen_menu)
         self.addMenu(gausian_blur_menu)
-        self.addAction(unshap_masking_menu)
-        self.addAction(average_filter_menu)
-        self.addAction(lowpass_filter_menu)
-        self.addAction(highpass_filter_menu)
-        self.addAction(bandstop_filter_menu)
+        self.addAction(self.unsharp_masking_menu)
+        self.addAction(self.average_filter_menu)
+        self.addAction(self.lowpass_filter_menu)
+        self.addAction(self.highpass_filter_menu)
+        self.addAction(self.bandstop_filter_menu)
         
     def identify_menu_click(self):
         self.identifyRequested.emit()
@@ -68,5 +98,33 @@ class Filter(QMenu):
     def edge3_menu_click(self):
         self.edge3Requested.emit()
     
+    
     def sharpen_menu_clicked(self):
         self.sharpenRequested.emit()
+        
+        
+    def gausian3_menu_click(self):
+        self.gausian3Requested.emit()
+    
+    def gausian5_menu_clicked(self):
+        self.gausian5Requested.emit()
+        
+        
+    def unsharp_masking_menu_clicked(self):
+        self.unsharpMaskingRequested.emit()
+        
+        
+    def average_menu_clicked(self):
+        self.averageRequested.emit()
+        
+        
+    def low_pass_clicked(self):
+        self.lowPassRequested.emit()
+        
+        
+    def high_pass_clicked(self):
+        self.highPassRequested.emit()
+        
+        
+    def bandstop_clicked(self):
+        self.bandstopRequested.emit()
